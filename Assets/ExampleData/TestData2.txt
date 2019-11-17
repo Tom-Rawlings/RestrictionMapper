@@ -1,0 +1,12 @@
+Number of enzymes = 2
+Enzyme 1 = EcoRI
+Enzyme 2 = BamHI
+
+//Single Digests
+1: 7.0, 1.0
+2: 4.0, 2.8, 1.2
+
+Number of MultiDigests = 1
+1 & 2: 4.0, 2.0, 1.0, 0.8, 0.2
+
+//Any lines that are blank or start with "//" will be ignored

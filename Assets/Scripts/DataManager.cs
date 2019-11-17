@@ -138,6 +138,11 @@ public class DataManager : MonoBehaviour {
 		return data._digests.Length;
 	}
 
+	public void ClearData()
+	{
+		data = new DataStruct();
+	}
+
 	
 	//Send the data to the logic manager
 	public DataStruct GetData()

@@ -26,9 +26,9 @@ public class MainManager : MonoBehaviour {
 	public bool useUiForDataInput = true;
 	public bool loadFromLocalFile = false;
 	public bool loadFromWebFile = false;
-	public string textFilePath1 = "LOGS/TestData1.txt";
-	public string textFilePath2 = "LOGS/TestData2.txt";
-	public string textFilePath3 = "LOGS/TestData3.txt";
+	public string textFilePath1 = "/LOGS/TestData1.txt";
+	public string textFilePath2 = "/LOGS/TestData2.txt";
+	public string textFilePath3 = "/LOGS/TestData3.txt";
 	private string webTextFilePath = "TestData.txt";
 	private string webJsonFilePath = "TestData.json";
 	public bool use3DMapAsDefault = true;

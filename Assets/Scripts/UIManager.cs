@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour {
 		NUMBER_OF_MULTIDIGESTS, 
 		MULTIDIGEST_FRAGMENTS, 
 		REVIEW_DATA,
+		REVIEW_EXAMPLE_DATA,
 		CALCULATIONS
 	}
 
@@ -122,6 +123,7 @@ public class UIManager : MonoBehaviour {
 			case MenuState.START_SCREEN:
 				startPageParent.SetActive(true);
 				navigationParent.SetActive(false);
+				DataManager.getInstance().ClearData();
 				break;
 			case MenuState.DATA_SELECT:
 				dataSelectParent.SetActive(true);
@@ -180,6 +182,10 @@ public class UIManager : MonoBehaviour {
 				MultiDigestPage(currentMultiDigestPage);
 				break;
 			case MenuState.REVIEW_DATA:
+				reviewDataParent.SetActive(true);
+				DataReview();
+				break;
+			case MenuState.REVIEW_EXAMPLE_DATA:
 				reviewDataParent.SetActive(true);
 				DataReview();
 				break;
@@ -274,6 +280,10 @@ public class UIManager : MonoBehaviour {
 				HideAllUILabels();
 				gameObject.GetComponent<LogicManager>().BeginCalculations();
 				break;
+			case MenuState.REVIEW_EXAMPLE_DATA:
+				DisableAllUiParents();
+				gameObject.GetComponent<LogicManager>().BeginCalculations();
+				break;
 			default:
 				ChangeMenuState(MenuState.START_SCREEN);
 				break;
@@ -313,11 +323,40 @@ public class UIManager : MonoBehaviour {
 				currentMultiDigestPage = DataManager.getInstance().GetNumberOfMultiDigests() -1;
 				ChangeMenuState(MenuState.MULTIDIGEST_FRAGMENTS);
 				break;
+			case MenuState.REVIEW_EXAMPLE_DATA:
+				ChangeMenuState(MenuState.DATA_SELECT);
+				break;
 			default:
 				ChangeMenuState(MenuState.START_SCREEN);
 				break;
 		}
 
+	}
+
+	public void LoadExampleData1()
+	{
+		Debug.Log(LoadFromTextFile.getInstance());
+		Debug.Log(MainManager.getInstance().textFilePath1);
+		LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(MainManager.getInstance().textFilePath1);
+	}
+
+	public void DataLoaded()
+	{
+		ChangeMenuState(MenuState.REVIEW_EXAMPLE_DATA);
+	}
+
+	public void LoadExampleData2()
+	{
+		Debug.Log(LoadFromTextFile.getInstance());
+		Debug.Log(MainManager.getInstance().textFilePath2);
+		LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(MainManager.getInstance().textFilePath2);
+	}
+
+	public void LoadExampleData3()
+	{
+		Debug.Log(LoadFromTextFile.getInstance());
+		Debug.Log(MainManager.getInstance().textFilePath3);
+		LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(MainManager.getInstance().textFilePath3);
 	}
 
 	private void SingleDigestPage(int pageNumber)
@@ -499,20 +538,28 @@ public class UIManager : MonoBehaviour {
 
 	public void DataReview()
 	{
-		string textToShow = "Review Data:\n\n";
+		string textToShow = "";
+		string enzymeNames = "Enzymes:";
 		
 		DataManager.DataStruct data = DataManager.getInstance().GetData();
 		for(int i = 0; i < data._enzymes.Length; i++)
 		{
+			enzymeNames += data._enzymes[i].name;
 			textToShow += data._enzymes[i].name + ": ";
 			for(int x = 0; x < data._enzymes[i].fragmentSizes.Length; x++)
 			{
 				textToShow += data._enzymes[i].fragmentSizes[x]; 
-				if(x < data._enzymes[i].fragmentSizes.Length-1)
+				if(x < data._enzymes[i].fragmentSizes.Length-1){
 					textToShow += ", ";
+				}
+			}
+			if(i < data._enzymes.Length-1){
+				enzymeNames += ", ";
 			}
 			textToShow += "\n";
 		}
+
+		textToShow = "Review Data:\n\n" + enzymeNames + "\nSingle-enzyme digest fragments:\n" + textToShow + "Multi-enzyme Digests:\n";
 		for(int i = 0; i < data._digests.Length; i++)
 		{
 			textToShow += data._digests[i].name + ": ";

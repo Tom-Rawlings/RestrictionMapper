@@ -468,13 +468,14 @@ public class LogicManager : MonoBehaviour {
 
 	bool MultiDigestCutPositionsFromSingleDigests(int multiDigestIndex)
 	{
+		Debug.Log("multiDigestIndex = " + multiDigestIndex);
 		for (int i = 0; i < genomeSize; i++)
 		{
 			if (CheckOneMultiDigest(multiDigestIndex))
 			{
 				//Found the positions for that multidigest -- Copy into multidigest's CutPosition field
 				int numberOfEnzymesInDigest = multiDigests[multiDigestIndex].enzymesInDigest.Length;
-                for (int y = 0; y < numberOfEnzymesInDigest; y++)
+				for (int y = 0; y < numberOfEnzymesInDigest; y++)
 				{
 					int numberOfEnzymeCutPositions = enzymes[multiDigests[multiDigestIndex].enzymesInDigest[y]].cutPositions.Length;
 					for (int x = 0; x < numberOfEnzymeCutPositions; x++)

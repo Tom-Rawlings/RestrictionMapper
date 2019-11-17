@@ -438,13 +438,14 @@ public class LoadFromTextFile : MonoBehaviour {
 
 		#endregion
 
-		PopulateTextFields();
+		UIManager.getInstance().DataLoaded();
+		//PopulateTextFields();
 
 	}
 
 	public void LoadDataFromLocalTextFile(string _filePath)
 	{
-		filePath = _filePath;
+		filePath = Application.dataPath + _filePath;
 
 		#region Loading the Text file and formatting it 
 
