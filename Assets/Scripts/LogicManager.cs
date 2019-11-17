@@ -17,6 +17,7 @@ public class LogicManager : MonoBehaviour {
 
 	private bool isFinished = false;
 	private int currentlyVisualising = 0;
+	private string errorMessage = "Error during calculations";
 
 	DataManager.DataStruct loadedData;
 
@@ -35,8 +36,13 @@ public class LogicManager : MonoBehaviour {
 
 			MainManager.getInstance().CalculationsComplete(true);
 		}else{
-			MainManager.getInstance().ChangeState(1);
+			MainManager.getInstance().CalculationsComplete(false);
 		}
+	}
+
+	public string GetErrorMessage()
+	{
+		return errorMessage;
 	}
 
 	private bool CalculationAlgorithm()
@@ -52,7 +58,7 @@ public class LogicManager : MonoBehaviour {
 		for (int i = 0; i < enzymes.Length; i++)
 		{
 			if(enzymes[i].fragmentSizes.Length == 0){
-				Debug.Log("Enzyme " + enzymes[i].name + " digest has no fragments. Calculation aborted.");
+				errorMessage = "Enzyme " + enzymes[i].name + " digest has no fragments. Calculation aborted.";
 				return false;
 			}
 		}
@@ -161,7 +167,7 @@ public class LogicManager : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log("multidigest " + i + " Failed");
+				errorMessage = "Multidigest " + i + " failed to solve";
 				return false;
 			}
 
@@ -556,7 +562,7 @@ public class LogicManager : MonoBehaviour {
 						}
 							
 					}
-                }
+				}
 			}
 		}
 

@@ -26,7 +26,9 @@ public class MainManager : MonoBehaviour {
 	public bool useUiForDataInput = true;
 	public bool loadFromLocalFile = false;
 	public bool loadFromWebFile = false;
-	public string textFilePath = "LOGS/TestData.txt";
+	public string textFilePath1 = "LOGS/TestData1.txt";
+	public string textFilePath2 = "LOGS/TestData2.txt";
+	public string textFilePath3 = "LOGS/TestData3.txt";
 	private string webTextFilePath = "TestData.txt";
 	private string webJsonFilePath = "TestData.json";
 	public bool use3DMapAsDefault = true;
@@ -88,7 +90,7 @@ public class MainManager : MonoBehaviour {
 		else if(loadFromLocalFile)
 		{
 			UIManager.getInstance().Toggle_DataInfo(true);
-			LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(textFilePath);
+			LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(textFilePath1);
 			//LoadFromTextFile.getInstance().LoadDataFromWebTextFile(webTextFilePath);
 		}
 		else if(loadFromWebFile)
@@ -109,13 +111,18 @@ public class MainManager : MonoBehaviour {
 	{
 		if (wasSuccessful)
 		{
-			//TEMP CODE!!
+			/*TEMP CODE!!
 			UIManager.getInstance().Toggle_DataInfo(false);
 			UIManager.getInstance().Toggle_DataInfoFULLParent(true);
 			UIManager.getInstance().DisplayFullData();
 			UIManager.getInstance().Change_DataScreenButtons();
 
-			//
+			*/
+			ChangeState(STATE_VISUALISATION);
+		}
+		else
+		{
+			UIManager.getInstance().ErrorPage(gameObject.GetComponent<LogicManager>().GetErrorMessage());
 		}
 	}
 

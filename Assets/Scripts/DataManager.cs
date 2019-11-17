@@ -112,7 +112,12 @@ public class DataManager : MonoBehaviour {
 		data._digests[multiDigestIndex].enzymesInDigest = new int[enzymesInMultiDigest.Length];
 		enzymesInMultiDigest.CopyTo(data._digests[multiDigestIndex].enzymesInDigest, 0);
 		HelperMethods.IntArrayCopy(ref enzymesInMultiDigest, ref data._digests[multiDigestIndex].enzymesInDigest);
-
+		string digestName = "";
+		for(int i = 0; i < enzymesInMultiDigest.Length; i++)
+		{
+			digestName += this.GetEnzymeName(enzymesInMultiDigest[i]) + " ";
+		}
+		data._digests[multiDigestIndex].name = digestName;
 	}
 
 	#endregion

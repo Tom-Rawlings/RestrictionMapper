@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject startPageParent;
 	[SerializeField]
+	private GameObject dataSelectParent;
+	[SerializeField]
 	private GameObject navigationParent;
 	[SerializeField]
 	private GameObject numberOfEnzymesParent;
@@ -52,6 +54,8 @@ public class UIManager : MonoBehaviour {
 	private GameObject reviewDataParent;
 	[SerializeField]
 	private GameObject visualisationUI;
+	[SerializeField]
+	private GameObject errorPageParent;
 
 	#region DataInfo Labels
 	[Header("DataInfo Labels")]
@@ -79,7 +83,8 @@ public class UIManager : MonoBehaviour {
 
 	private enum MenuState
 	{
-		START_SCREEN, 
+		START_SCREEN,
+		DATA_SELECT, 
 		NUMBER_OF_ENZYMES, 
 		ENZYME_NAMING, 
 		ENZYME_FRAGMENTS, 
@@ -116,6 +121,10 @@ public class UIManager : MonoBehaviour {
 		{
 			case MenuState.START_SCREEN:
 				startPageParent.SetActive(true);
+				navigationParent.SetActive(false);
+				break;
+			case MenuState.DATA_SELECT:
+				dataSelectParent.SetActive(true);
 				navigationParent.SetActive(false);
 				break;
 			case MenuState.NUMBER_OF_ENZYMES:
@@ -187,6 +196,10 @@ public class UIManager : MonoBehaviour {
 	{
 		switch(currentMenuState)
 		{
+			case MenuState.DATA_SELECT:
+				ChangeMenuState(MenuState.NUMBER_OF_ENZYMES);
+				break;
+
 			case MenuState.NUMBER_OF_ENZYMES:
 				//Check the number of enzymes is above 0 and cancel / do error message if not
 				if(numberOfEnzymesField.text == "" || int.Parse(numberOfEnzymesField.text) <= 0	|| int.Parse(numberOfEnzymesField.text) > 8)
@@ -273,7 +286,7 @@ public class UIManager : MonoBehaviour {
 		switch(currentMenuState)
 		{
 			case MenuState.NUMBER_OF_ENZYMES:
-				ChangeMenuState(MenuState.START_SCREEN);
+				ChangeMenuState(MenuState.DATA_SELECT);
 				break;
 			case MenuState.ENZYME_NAMING:
 				ChangeMenuState(MenuState.NUMBER_OF_ENZYMES);
@@ -448,17 +461,14 @@ public class UIManager : MonoBehaviour {
 	public bool MultiDigestPageCollectData()
 	{
 
-		/*
+		int numberOfFragments = 0;
 		for (int i = 0; i < multiDigestInputs.Length; i++)
 		{
-			if (multiDigestInputs[i].text == "")
+			if (multiDigestInputs[i].text != "")
 			{
-
-				errorText.text = "All fragments must have a size";
-				return false;
+				numberOfFragments++;
 			}
 		}
-		*/
 
 		if(currentMultiDigestEnzymes.Count <= 1)
 		{
@@ -466,12 +476,14 @@ public class UIManager : MonoBehaviour {
 			return false;
 		}
 
-		int[] fragmentSizes = new int[multiDigestInputs.Length];
+		int[] fragmentSizes = new int[numberOfFragments];
 
 		for (int i = 0; i < multiDigestInputs.Length; i++)
 		{
-			if (multiDigestInputs[i].text != "")
+			if (multiDigestInputs[i].text != ""){
+				Debug.Log("multiDigestInputs["+i+"]=" + multiDigestInputs[i].text);
 				fragmentSizes[i] = int.Parse(multiDigestInputs[i].text);
+			}
 		}
 
 		DataManager.getInstance().SetMultiDigestFragmentSizes(currentMultiDigestPage, fragmentSizes);
@@ -501,7 +513,26 @@ public class UIManager : MonoBehaviour {
 			}
 			textToShow += "\n";
 		}
+		for(int i = 0; i < data._digests.Length; i++)
+		{
+			textToShow += data._digests[i].name + ": ";
+			for(int x = 0; x < data._digests[i].fragmentSizes.Length; x++)
+			{
+				textToShow += data._digests[i].fragmentSizes[x]; 
+				if(x < data._digests[i].fragmentSizes.Length-1)
+					textToShow += ", ";
+			}
+			textToShow += "\n";
+		}
 		reviewDataParent.transform.Find("Text").GetComponent<Text>().text = textToShow;
+	}
+
+	public void ErrorPage(string errorMessage)
+	{
+		HideAllUILabels();
+		DisableAllUiParents();
+		errorPageParent.SetActive(true);
+		errorPageParent.GetComponentInChildren<Text>().text = errorMessage;
 	}
 
 	public void DisableAllUiParents()
@@ -639,7 +670,7 @@ public class UIManager : MonoBehaviour {
 
 	public void StartPage_StartButton()
 	{
-		ChangeMenuState(MenuState.NUMBER_OF_ENZYMES);
+		ChangeMenuState(MenuState.DATA_SELECT);
 	}
 
 	public void EnzymeNaming_NextButton()

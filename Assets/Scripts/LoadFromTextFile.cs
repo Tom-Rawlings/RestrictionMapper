@@ -179,58 +179,6 @@ public class LoadFromTextFile : MonoBehaviour {
 		
 	}
 
-	/*
-	private void DecodeJson(string jsonString)
-	{
-		Debug.Log("Decode Json");
-		DataJson jsonData = JsonUtility.FromJson<DataJson>(jsonString);
-
-		DataManager.getInstance().SetEnzymes(jsonData.enzymes.Length);
-
-		for (int i = 0; i < jsonData.enzymes.Length; i++)
-		{
-			DataManager.getInstance().SetEnzymeName(i, jsonData.enzymes[i]);
-		}
-
-		for (int i = 0; i < jsonData.singleDigests.Count; i++)
-		{
-			DataManager.getInstance().SetEnzymeNumberOfFragments(i, jsonData.singleDigests[i].Count);
-		}
-
-		for (int i = 0; i < jsonData.singleDigests.Count; i++)
-		{
-			DataManager.getInstance().SetEnzymeFragmentSizes(i, jsonData.singleDigests[i].ToArray());
-		}
-
-
-		DataManager.getInstance().SetNumberOfMultiDigests(jsonData.multiDigests.Length);
-
-		for (int i = 0; i < jsonData.multiDigests.Length; i++)
-		{
-			DataManager.getInstance().SetMultiDigestNumberOfFragments(i, jsonData.multiDigests[i].fragmentSizes.Length);
-		}
-
-		for (int i = 0; i < jsonData.multiDigests.Length; i++)
-		{
-			DataManager.getInstance().SetMultiDigestFragmentSizes(i, jsonData.multiDigests[i].fragmentSizes);
-		}
-
-		//Correct enzymes ID as they're zero based
-		for (int i = 0; i < jsonData.multiDigests.Length; i++)
-		{
-			for (int x = 0; x < jsonData.multiDigests.Length; x++)
-			{
-				jsonData.multiDigests[i].enzymesInDigest[x]--;
-			}
-		}
-
-		for (int i = 0; i < jsonData.multiDigests.Length; i++)
-		{
-			DataManager.getInstance().SetMultiDigestEnzymes(i, jsonData.multiDigests[i].enzymesInDigest);
-		}
-	}
-	*/
-
 	private void ProcessData(string[] linesOfData)
 	{
 
