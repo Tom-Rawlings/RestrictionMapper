@@ -2,7 +2,7 @@
 
 This tool was coded in C# using the Unity engine.
 
-Try the live WebGL version.
+[Try the live WebGL version.](http://tomrawlings.online/RestrictionMapper/index)
 
 ![Restriction Mapper screenshot](http://tomrawlings.online/images/restriction_mapper_cropped.png)
 
