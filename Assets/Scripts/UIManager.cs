@@ -200,6 +200,7 @@ public class UIManager : MonoBehaviour {
 
 	public void NextButton()
 	{
+		ErrorMessage("");
 		switch(currentMenuState)
 		{
 			case MenuState.DATA_SELECT:
@@ -278,6 +279,7 @@ public class UIManager : MonoBehaviour {
 			case MenuState.REVIEW_DATA:
 				Debug.Log("Review Data Next");
 				HideAllUILabels();
+				DisableAllUiParents();
 				gameObject.GetComponent<LogicManager>().BeginCalculations();
 				break;
 			case MenuState.REVIEW_EXAMPLE_DATA:
@@ -337,7 +339,15 @@ public class UIManager : MonoBehaviour {
 	{
 		Debug.Log(LoadFromTextFile.getInstance());
 		Debug.Log(MainManager.getInstance().textFilePath1);
-		LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(MainManager.getInstance().textFilePath1);
+		if (Application.isEditor)
+		{
+			LoadFromTextFile.getInstance().LoadDataFromLocalTextFile(MainManager.getInstance().textFilePath1);
+		}
+		else
+		{
+			LoadFromTextFile.getInstance().LoadJsonDataFromWeb(MainManager.getInstance().webTextFilePath);
+		}
+		
 	}
 
 	public void DataLoaded()
@@ -396,7 +406,7 @@ public class UIManager : MonoBehaviour {
 		for (int i = 0; i < numberOfEnzymes; i++)
 		{
 			GameObject obj = Instantiate(singleDigestPrefab, menuUI.transform);
-			obj.transform.Find("Title").GetComponent<Text>().text = DataManager.getInstance().GetEnzymeName(i) + " Digest";
+			obj.transform.Find("Title").GetComponent<Text>().text = "Enter all fragments for\n" + DataManager.getInstance().GetEnzymeName(i) + " Digest (8 maximum)";
 			obj.SetActive(false);
 			singleDigestPages[i] = obj;
 		}
@@ -449,7 +459,7 @@ public class UIManager : MonoBehaviour {
 		for (int i = 0; i < numberOfMultiDigests; i++)
 		{
 			GameObject obj = Instantiate(multiDigestPrefab, menuUI.transform);
-			obj.transform.Find("Title").GetComponent<Text>().text = "Multi Digest " + (i+1) + "/" + numberOfMultiDigests;
+			obj.transform.Find("Title").GetComponent<Text>().text = "Enter all fragments (8 maximum)\nfor Multi Digest " + (i+1) + "/" + numberOfMultiDigests;
 
 			//EnzymeToggles
 			for (int x = 0; x < numberOfEnzymes; x++)
@@ -525,6 +535,7 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 
+		DataManager.getInstance().SetMultiDigestNumberOfFragments(currentMultiDigestPage, fragmentSizes.Length);
 		DataManager.getInstance().SetMultiDigestFragmentSizes(currentMultiDigestPage, fragmentSizes);
 
 		//Convert multidigest enzymes into array and pass to manager
@@ -559,7 +570,7 @@ public class UIManager : MonoBehaviour {
 			textToShow += "\n";
 		}
 
-		textToShow = "Review Data:\n\n" + enzymeNames + "\nSingle-enzyme digest fragments:\n" + textToShow + "Multi-enzyme Digests:\n";
+		textToShow = "Review Data:\n\n" + enzymeNames + "\n\nSingle-enzyme digest fragments:\n" + textToShow + "\nMulti-enzyme Digests:\n";
 		for(int i = 0; i < data._digests.Length; i++)
 		{
 			textToShow += data._digests[i].name + ": ";
@@ -919,6 +930,7 @@ public class UIManager : MonoBehaviour {
 
 	}
 
+	/*
 	public void MultiDigest_NextButton()
 	{
 		for (int i = 0; i < multiDigestInputs.Length; i++)
@@ -982,6 +994,7 @@ public class UIManager : MonoBehaviour {
 	{
 
 	}
+	*/
 
 	public void Visualisation_FlipButton()
 	{

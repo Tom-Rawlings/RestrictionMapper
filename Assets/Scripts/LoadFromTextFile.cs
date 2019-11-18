@@ -175,7 +175,8 @@ public class LoadFromTextFile : MonoBehaviour {
 
 
 		Debug.Log("After MultiDigestJson");
-		PopulateTextFields();
+		UIManager.getInstance().DataLoaded();
+		//PopulateTextFields();
 		
 	}
 
