@@ -823,6 +823,7 @@ public class UIManager : MonoBehaviour {
 		//Do back stuff later
 	}
 
+/*
 	public void NumberOfMultiDigests_NextButton()
 	{
 
@@ -915,6 +916,8 @@ public class UIManager : MonoBehaviour {
 		FocusNextInputField();
 
 	}
+
+	*/
 
 	public void MultiDigest_EnzymeToggle(GameObject toggle)
 	{
